@@ -1,0 +1,21 @@
+package myCalculator;
+
+public class MyCalculator {
+	
+ public void calAdd(int fNum, int sNum) {
+	 int result = fNum + sNum;
+	 System.out.println("result:"+ result);
+ }
+ public void calsub(int fNum, int sNum) {
+	 int result = fNum - sNum;
+	 System.out.println("result:"+ result);
+ }
+ public void calMul(int fNum, int sNum) {
+	 int result = fNum * sNum;
+	 System.out.println("result:"+ result);
+ }
+ public void calDiv(int fNum, int sNum) {
+	 int result = fNum / sNum;
+	 System.out.println("result:"+ result);
+ }
+}

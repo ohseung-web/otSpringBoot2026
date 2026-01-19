@@ -1,0 +1,27 @@
+package myCalculator;
+
+public class MyCalculator {
+	
+ public void calAdd(int fNum, int sNum) {
+	 //부품화 한다.
+	 CalAdd caladd = new CalAdd();
+	 int result = caladd.add(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ public void calsub(int fNum, int sNum) {
+	 CalAsub calsub = new CalAsub();
+	 int result = calsub.sub(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ public void calMul(int fNum, int sNum) {
+	 CalAdd caladd = new CalAdd()
+	 int result = fNum * sNum;
+	 System.out.println("result:"+ result);
+ }
+ public void calDiv(int fNum, int sNum) {
+	 CalAdd caladd = new CalAdd()
+	 int result = (sNum != 0)? fNum / sNum : 0;
+	 System.out.println("result:"+ result);
+ }
+ 
+}

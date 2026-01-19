@@ -1,0 +1,11 @@
+package myCalculator;
+
+public class MainClass {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		MyCalculator mycal = new MyCalculator();
+		mycal.calAdd(20, 10);
+	}
+
+}

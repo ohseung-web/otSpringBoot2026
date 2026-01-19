@@ -1,0 +1,17 @@
+package myMsg;
+
+public class Phone {
+  private Message Msg;
+  
+ // DI를 이용하여 외부에서 객체 삽입
+  public Phone(Message Msg) {
+	//객체와 객체가 강하게 결합되어 있어 생기는 문제점
+	//this.Msg = new Msg();
+	  this.Msg = Msg;
+  }
+  
+  public void pushMsgBtn() {
+	  Msg.send();
+	  System.out.println("메시지를 보냄");
+  }
+}

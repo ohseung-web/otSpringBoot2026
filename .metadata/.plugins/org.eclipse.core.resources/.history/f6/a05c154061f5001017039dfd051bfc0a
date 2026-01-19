@@ -1,0 +1,29 @@
+package myCalculator;
+
+public class MyCalculator {
+	
+ public void calAdd(int fNum, int sNum, CalAdd caladd) {
+	 //부품화 한다.
+	 //CalAdd caladd = new CalAdd();
+	 //인터페이스를 이용해 설계하고 나면 모든 내부 구조가 모두 같다
+	 ICal calculator = new CalAdd();
+	 int result = calculator.doOper(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ public void calsub(int fNum, int sNum) {
+	 ICal calculator = new CalAsub();
+	 int result = calculator.doOper(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ public void calMul(int fNum, int sNum) {
+	 ICal calculator = new CalAmul();
+	 int result = calculator.doOper(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ public void calDiv(int fNum, int sNum) {
+	 ICal calculator = new CalDiv();
+	 int result = calculator.doOper(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ 
+}

@@ -1,0 +1,31 @@
+package myCalculator;
+
+public class MyCalculator {
+
+// 외부에서 CalAdd를 주입해주면 나는 그대로 받겠다	
+ public void calAdd(int fNum, int sNum, CalAdd caladd) {
+	 //부품화 한다.
+	 //CalAdd caladd = new CalAdd();
+	 //인터페이스를 이용해 설계하고 나면 모든 내부 구조가 모두 같다
+	 // 외부에서 주입받으면 내가 직접 관리할 필요가 없기때문에 아래 코드는 필요가 없다.
+	 //ICal calculator = new CalAdd(); 
+	 int result = calculator.doOper(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ public void calsub(int fNum, int sNum, CalAsub calsub) {
+	 ICal calculator = new CalAsub();
+	 int result = calculator.doOper(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ public void calMul(int fNum, int sNum, CalAmul calmul) {
+	 ICal calculator = new CalAmul();
+	 int result = calculator.doOper(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ public void calDiv(int fNum, int sNum, CalDiv caldiv) {
+	 ICal calculator = new CalDiv();
+	 int result = calculator.doOper(fNum, sNum);
+	 System.out.println("result:"+ result);
+ }
+ 
+}

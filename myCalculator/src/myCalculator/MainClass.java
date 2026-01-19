@@ -1,0 +1,31 @@
+package myCalculator;
+
+public class MainClass {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+	//	MyCalculator mycal = new MyCalculator();
+		//객체를 외부에서 생성해서 던저 준다.
+		//다시 말해 객체생성해서 주입하겠다는 의미이다.
+		//의존성주입(DI)
+//		mycal.calAdd(20, 10,new CalAdd());
+//		mycal.calsub(20, 10,new CalAsub());
+//		mycal.calMul(20, 10,new CalAmul());
+//		mycal.calDiv(20, 10,new CalDiv());
+		
+		// 내가 주는 부품에 대해서 너는 두 오페레이터라는 메소드만 실행 시켜라
+		// 진정한 외부에서 의존객체를 삽입한 코드이다.
+//		mycal.cal(20, 10,new CalAdd());
+//		mycal.cal(20, 10,new CalAsub());
+//		mycal.cal(20, 10,new CalAmul());
+//		mycal.cal(20, 10,new CalDiv());
+		
+		//IoC : 제어역전 , 프로그램을 컨트롤하는 제어권을 넘겨준다.
+		//CalA cala = new CalA();
+		//cala.assembler();
+		
+		new CalA(); //이경우는 CalA에서 assembler()메소드를 생성자에서 불러온다음
+		
+	}
+
+}

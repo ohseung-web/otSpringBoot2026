@@ -1,0 +1,13 @@
+content_assist_disabled_computers=org.eclipse.jdt.ui.textProposalCategory\u0000org.eclipse.jdt.ui.javaPostfixProposalCategory\u0000org.eclipse.jdt.ui.javaAllProposalCategory\u0000org.eclipse.jdt.ui.javaTypeProposalCategory\u0000org.eclipse.jdt.ui.javaNoTypeProposalCategory\u0000org.eclipse.jdt.ui.javaChainProposalCategory\u0000
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="myCalculator.MyCalculator"><rhs name\="myCalculator.MyCalculator"/></lhs><lhs name\="myCalculator.ICal"><rhs name\="myCalculator.CalAdd"/><rhs name\="myCalculator.CalAmul"/><rhs name\="myCalculator.CalDiv"/><rhs name\="myCalculator.CalAsub"/></lhs><lhs name\="myCalculator.CalAdd"><rhs name\="myCalculator.CalAdd"/></lhs><lhs name\="myCalculator.CalAmul"><rhs name\="myCalculator.CalAmul"/></lhs><lhs name\="myCalculator.CalDiv"><rhs name\="myCalculator.CalDiv"/></lhs><lhs name\="myCalculator.CalAsub"><rhs name\="myCalculator.CalAsub"/></lhs><lhs name\="myCalculator.CalA"><rhs name\="myCalculator.CalA"/></lhs><lhs name\="myMsg.Phone"><rhs name\="myMsg.Phone"/></lhs></history>
+content_assist_number_of_computers=21
+content_assist_proposals_background=255,255,255
+content_assist_proposals_foreground=0,0,0
+eclipse.preferences.version=1
+org.eclipse.jdt.internal.ui.navigator.layout=2
+org.eclipse.jdt.internal.ui.navigator.librariesnode=true
+org.eclipse.jdt.ui.formatterprofiles.version=23
+spelling_locale_initialized=true
+typefilter_migrated_2=true
+useAnnotationsPrefPage=true
+useQuickDiffPrefPage=true

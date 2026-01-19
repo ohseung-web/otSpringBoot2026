@@ -1,0 +1,22 @@
+package myCalculator;
+
+public class MainClass {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		MyCalculator mycal = new MyCalculator();
+		//객체를 외부에서 생성해서 던저 준다.
+		//다시 말해 객체생성해서 주입하겠다는 의미이다.
+		//의존성주입(DI)
+//		mycal.calAdd(20, 10,new CalAdd());
+//		mycal.calsub(20, 10,new CalAsub());
+//		mycal.calMul(20, 10,new CalAmul());
+//		mycal.calDiv(20, 10,new CalDiv());
+		mycal.cal(20, 10,new CalAdd());
+		mycal.cal(20, 10,new CalAsub());
+		mycal.cal(20, 10,new CalAmul());
+		mycal.cal(20, 10,new CalDiv());
+		
+	}
+
+}

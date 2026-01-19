@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.lang.Override"/>
+    <fullyQualifiedTypeName name="myCalculator.ICal"/>
+    <fullyQualifiedTypeName name="myCalculator.MyCalculator"/>
+    <fullyQualifiedTypeName name="myCalculator.CalAdd"/>
+    <fullyQualifiedTypeName name="myCalculator.CalAmul"/>
+    <fullyQualifiedTypeName name="myCalculator.CalDiv"/>
+    <fullyQualifiedTypeName name="myCalculator.CalAsub"/>
+    <fullyQualifiedTypeName name="myCalculator.CalA"/>
+    <fullyQualifiedTypeName name="myMsg.Phone"/>
+</qualifiedTypeNameHistroy>

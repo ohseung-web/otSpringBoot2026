@@ -1,0 +1,20 @@
+package myMsg;
+
+public class PhoneAss {
+
+	//IoC 컨테이너 생성 클래스
+	Phone phone;
+	Message sms; //Bean 객체
+	Message mms;
+	
+	public PhoneAss() {
+		this.sms = new Sms();
+		this.mms = new Mms();
+	}
+	
+	//외부에서 주입하기 (=매개변수) 
+	public PhoneAss(Message sms, Message mms) {
+		this.mms = mms;
+		this.sms = sms;
+	}
+}
