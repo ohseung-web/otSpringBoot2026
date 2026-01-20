@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="kor" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:action="@{/member/sigin_comfirm}" method="POST">
+		<input type="text" name="id" placeholder="id" />
+		<br>
+		<input type="password" name="pw" placeholder="pw" />
+		<br>
+		<input type="submit" value="SING-IN" />
+	</form>
+</body>
+</html>
