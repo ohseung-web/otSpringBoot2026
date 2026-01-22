@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="kor" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+        table { border-collapse: collapse; width: 300px; margin-top: 10px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+	<h2>주소록 등록</h2>
+    <form action="@{/add-address}" method="post">
+        이름: <input type="text" name="name" required><br>
+        도시: <input type="text" name="city" required><br>
+        <button type="submit">주소 추가하기</button>
+    </form>
+    <hr>
+    <h2>주소록 목록</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>도시</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="addr : ${list}">
+                <td th:text="${addr.name}">이름</td>
+                <td th:text="${addr.city}">도시</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(list)}">
+                <td colspan="2">등록된 주소가 없습니다.</td>
+            </tr>
+        </tbody>
+    </table>
+    
+</body>
+</html>
