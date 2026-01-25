@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymleaf.com">
+<head>
+<meta charset="UTF-8">
+<title th:replace="~{/include/title.html::title}"></title>
+	<Link rel="stylesheet" th:href="@{/css/common.css}">
+	<Link rel="stylesheet" th:href="@{/css/header_nav_footer.css}">
+	<Link rel="stylesheet" th:href="@{/css/member.css}">
+	
+</head>
+<body>
+	<header th:replace="~{/include/header_nav_footer.html::header}"></header>
+	<nav th:replace="~{/include/header_nav_footer.html::nav}"></nav>
+	
+	<section>
+		<div id="section_wrap">
+		    <div class="word">
+		       SIGN-UP RESULT
+		    </div>
+			<div class="content">
+			   <th:block th:if="${result > 0}">
+			   		SIGN-UP SUCCESS
+			   </th:block>
+			   <th:block th:if="${result <= 0}">
+			   		SIGN-UP FAIL
+			   </th:block>
+			</div>
+		</div>
+	</section>
+	
+	<nav th:replace="~{/include/header_nav_footer.html::footer}"></nav>
+</body>
+</html>
