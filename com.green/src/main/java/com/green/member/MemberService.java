@@ -3,6 +3,7 @@ package com.green.member;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // controller -> service : DAO 메소드 찾아있어 
@@ -24,6 +25,9 @@ public class MemberService {
 	@Autowired
 	MemberDAO memberdao;
 
+	//암호화 하는 PasswordEncoder도 의존성 객체로 주입한다.
+	@Autowired
+	PasswordEncoder passwordencoder;
 	
 	//회원 전체 목록 출력하는 메소드
 	public List<MemberDTO> allListMember(){
@@ -38,9 +42,19 @@ public class MemberService {
 		//회원가입 중복체크
 		//id 없음 => flase
 		boolean isMember = memberdao.isMember(mdto.getId());
+		
 		//회원가입 중복체크 통과했다면
 		if(isMember == false) {
 			// 중복된 아이디가 존재하지 않을 때 DB에 회원의 정보가 추가된다.
+			// insertMember(mdto)부분에 암호화 하여 DAO로 넘긴다.
+			// pw를 암호화화된 비밀번호로 반환해준다.
+			String encodePw = passwordencoder.encode(mdto.getPw());
+			
+			// 암호화된 encodePw를 mdto.setPw()에 넣어준다.
+			mdto.setPw(encodePw);
+			
+			// insertMember(mdto)의 pw는 암호화된 비밀번호가 추가된다.
+			// 즉, MemberDAO의 insertMember(mdto)에 암호화된 비밀번호가 추가된다.
 			int result = memberdao.insertMember(mdto);
 			if(result > 0 ) {
 				return user_id_success; // result = 1
@@ -95,7 +109,23 @@ public class MemberService {
 		return memberdao.deleteMember(id) == 1;
 	}
 	
+	//--------------------------- 2026년 01월 29일 추가 --------------------------
 	
+	public MemberDTO loginConfirm(MemberDTO mdto) {
+		System.out.println("MemberService loginConfirm()메소드 확인");
+		
+		// 1. DB에서 해당정보의 Id 가져오기
+		MemberDTO dbMember = memberdao.oneSelectMember(mdto.getId());
+		
+		// 2. 사용자가 존재하고 비밀번호가 일치하는지 확인
+		// passwordEncoder.matches(사용자가 입력한 평문, DB에 저장된 암호문)
+		if(dbMember != null && dbMember.getPw() != null) {
+			if(passwordencoder.matches(mdto.getPw(), dbMember.getPw())) {
+				return dbMember; // 로그인 성공시 회원정보 반환
+			}
+		}
+		return null; //로그인 실패시 null 반환
+	}
 	
 }
 

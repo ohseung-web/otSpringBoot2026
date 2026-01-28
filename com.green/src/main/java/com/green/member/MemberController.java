@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class MemberController {
 	
@@ -136,9 +138,46 @@ public class MemberController {
 	}
 	
 	
+	// 로그인 양식 폼 이동
+    @GetMapping("/member/login")
+    public String loginFrom() {
+        System.out.println("MemberController loginFrom() 폼 이동");
+        return "member/login_form";
+    }
 	
-	
-	
+ // 로그인 확인 처리
+    @PostMapping("/member/loginPro")
+    public String loginPro(MemberDTO mdto, RedirectAttributes re, HttpSession session) {
+        System.out.println("MemberController loginPro() 처리");
+        
+        MemberDTO loginedMember = meberservice.loginConfirm(mdto);
+        
+        if (loginedMember != null) {
+            // 로그인 성공 시 세션에 회원 정보 저장
+            session.setAttribute("loginedMember", loginedMember);
+            re.addFlashAttribute("msg", loginedMember.getId() + "님 환영합니다!");
+            return "redirect:/";
+        } else {
+            // 로그인 실패 시
+            re.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            return "redirect:/member/login";
+        }
+    }
+    
+    // 로그아웃
+    @GetMapping("/member/logout")
+    public String logout(HttpSession session, RedirectAttributes re) {
+    	
+    	// 1. 세션 무효화 (세션에 담긴 모든 데이터 삭제)
+        session.invalidate(); 
+        
+        // 2. 로그아웃 완료 메시지 전달 (선택사항)
+        re.addFlashAttribute("msg", "로그아웃 되었습니다.");
+        
+        // 3. 홈 화면으로 리다이렉트 (url: /)
+        return "redirect:/";
+       
+    }
 	
 	
 	
