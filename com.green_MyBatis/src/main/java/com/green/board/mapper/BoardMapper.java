@@ -39,6 +39,14 @@ public interface BoardMapper {
 	    // 전체 게시글의 개수 구하는 메소드
 	    public int getAllcount();
 	    
+	    // 전체 게시글을 startRow부터 ~ paseSize 만큼 보기
+	    public List<BoardDTO> getPageList(@Param("startRow") int startRow, 
+	    		@Param("pageSize") int pageSize);
+	    
+	    
+	    
 	    // 전체 조회가 아닌, 페이징 처리를 위한 조회로 수정합니다.
 	    public List<BoardDTO> getPageBoard(@Param("offset") int offset, @Param("limit") int limit);
+	    
+	   
 }

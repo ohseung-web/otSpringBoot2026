@@ -9,8 +9,14 @@ public class BoardDTO {
   private int readcount; // 조회수
   private String content; // 글 내용
   private String id;//회원 아이디
+  private String image; //업로드 이미지
   
-  
+  public String getImage() {
+	return image;
+}
+  public void setImage(String image) {
+	this.image = image;
+  }
   public String getId() {
 	return id;
 }

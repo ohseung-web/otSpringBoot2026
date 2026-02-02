@@ -80,13 +80,21 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public List<BoardDTO> getPageList(int startRow, int pageSize) {
+			System.out.println("BoardServiceImpl getPageList() 메소드 확인");
+		    return boardMapper.getPageList(startRow, pageSize);
+	}
+	
+	@Override
 	public List<BoardDTO> getPageBoard(int offset, int limit) {
 		System.out.println("BoardServiceImpl getPageBoard() 메소드 확인");
 		return boardMapper.getPageBoard(offset, limit);
 	}
 	
+	
+	
 	@Override
-	public List<BoardDTO> getPageList(int page, int pageSize) {
+	public List<BoardDTO> getPageList2(int page, int pageSize) {
 		System.out.println("BoardServiceImpl getPageList() 메소드 확인");
 	    // MySQL의 LIMIT은 0부터 시작하므로 (현재페이지 - 1) * 페이지크기 로 계산합니다.
 	    int offset = (page - 1) * pageSize;

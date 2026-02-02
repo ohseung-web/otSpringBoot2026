@@ -35,5 +35,7 @@ public interface BoardService {
    public List<BoardDTO> getPageBoard(int offset, int limit);
    
 	// BoardService.java 인터페이스에 추가할 메서드
-	public List<BoardDTO> getPageList(int page, int pageSize);
+	public List<BoardDTO> getPageList2(int page, int pageSize);
+	
+	public List<BoardDTO> getPageList(int startRow, int pageSize);
 }

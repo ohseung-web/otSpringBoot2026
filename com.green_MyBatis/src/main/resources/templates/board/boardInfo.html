@@ -36,6 +36,16 @@
 		           <td align="center" width="120">글내용</td>
 		           <td align="center" colspan="3" th:text="${oneboard.content}"></td>
 		        </tr>
+		        
+		        <!-- ⭐ 이미지 출력 추가 (여기!) -->
+		        <tr th:if="${oneboard.image != null}">
+		            <td align="center" width="120">이미지</td>
+		            <td align="center" colspan="3">
+		                <img th:src="@{/upload/{img}(img=${oneboard.image})}"
+		                     style="max-width:400px;">
+		            </td>
+		        </tr>
+		        <p th:text="${oneboard.image}"></p>
 		        <tr height="40">
 				    <td align="center" colspan="4">
 				        <input type="button" value="수정하기" 

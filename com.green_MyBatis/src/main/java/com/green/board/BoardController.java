@@ -1,13 +1,26 @@
 package com.green.board;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.green.member.MemberDTO;
 
@@ -31,7 +44,9 @@ public class BoardController {
 	
 	// 2. 게시글 저장 처리 (신규 추가 중요!)
     @PostMapping("/board/writePro")
-    public String boardWritePro(BoardDTO bdto, HttpSession session) {
+    public String boardWritePro(BoardDTO bdto, HttpSession session,
+    		@RequestParam("file") MultipartFile file
+    		) {
         System.out.println("BoardController boardWritePro() 호출");
         
         //1. 세션에서 로그인된 회원정보(MemberDTO)를 가져온다.
@@ -48,6 +63,33 @@ public class BoardController {
             return "redirect:/member/login";
         }
         
+        /* ===============================
+        2. 이미지 업로드 처리
+        =============================== */
+
+         // 파일이 선택되었는지 확인
+	     if (!file.isEmpty()) {
+	
+	         // 업로드 폴더 (수업용: 고정 경로)
+	         String uploadPath = "d:/upload/";
+	
+	         // 원본 파일명
+	         String fileName = file.getOriginalFilename();
+	         System.out.println("업로드 파일명: " + fileName);
+	
+	         try {
+	             // 실제 파일 저장
+	             file.transferTo(new File(uploadPath + fileName));
+	
+	             // ⭐ DB에는 파일명만 저장
+	             bdto.setImage(fileName);
+	
+	         } catch (IOException e) {
+	             e.printStackTrace();
+	         }
+	     }
+
+        
         // id가 포함된 bdto를 서비스로 넘겨 addBoard 호출하여 DB 저장
         boardService.addBoard(bdto);
         
@@ -55,6 +97,20 @@ public class BoardController {
         return "redirect:/board/list";
     }
 	
+    // 이미지 출력용 메소드
+//    @GetMapping("/upload/{filename}")
+//    @ResponseBody
+//    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
+//
+//        // 실제 이미지가 저장된 경로
+//    	 Path filePath = Paths.get("d:/upload/").resolve(filename);
+//    	    Resource resource = new UrlResource(filePath.toUri());
+//
+//    	    return ResponseEntity.ok()
+//    	            .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(filePath))
+//    	            .body(resource);
+//    }
+    
 	// 3. 게시글 목록 보기 핸들러
 //	@GetMapping("/board/list")
 //	public String boardList(Model model) {
@@ -99,33 +155,31 @@ public class BoardController {
 		public String boardList(Model model,
 		        @RequestParam(value="searchType", required=false) String searchType,
 		        @RequestParam(value="searchKeyword", required=false) String searchKeyword,
-		        @RequestParam(value="page", required=false, defaultValue="1") int page // 1. 페이지 번호 파라미터 추가
-		        ) {
+		         // 1. 페이지 번호 => 1부터 시작으로 초기값 지정하는 파라미터 추가
+		        @RequestParam(value="page", required=false, defaultValue="1") int page, 
+		        //  2. 페이지 사이즈 => 한 화면에 보여지는 게시글의 개수를 5개로 초기화하는 파라미터 추가
+		        @RequestParam(value="pageSize", required=false, defaultValue="5") int pageSize
+				) {
 		    System.out.println("1)BoardController boardList()메소드 호출");
 		    
-		    // 2. 전체 게시글 개수 가져오기
+		    // 3. 전체 게시글 개수 가져오기
 		    int totalCnt = boardService.getAllcount();
 		    
-		    // 3. PageHandler 생성 (현재 페이지와 전체 게시글 수 전달)
-		    // pageSize를 10으로 설정하는 생성자를 사용하거나, 기본 생성자 후 설정하세요.
-		    PageHandler ph = new PageHandler(totalCnt, page, 10); 
-		    
+		    // 4. PageHandler 생성 (현재 페이지와 전체 게시글 수 전달)
+		    PageHandler ph = new PageHandler(totalCnt, page, pageSize); 
+		 
 		    List<BoardDTO> listboard;  
 		    
-		    // 4. (참고) 실제 페이징 쿼리를 적용하려면 MyBatis 쿼리에 LIMIT을 추가하고 
-		    // 아래 메서드들에 시작 번호(offset) 등을 넘겨주어야 하지만, 
-		    // 우선 현재 구조에서 PageHandler를 모델에 담는 로직을 완성합니다.
 		    if(searchType != null && !searchKeyword.trim().isEmpty() ) {
 		        listboard = boardService.searchBoard(searchType, searchKeyword);
-		    } else {
-		    	// [수정] 전체 조회가 아닌, 현재 페이지(page)에 맞는 10개 데이터만 가져오도록 변경
-		        listboard = boardService.getPageList(page, 10);
-		        //listboard = boardService.allBoard();
+		    } else {	    	
+		    	// 5 핵심: PageHandler가 계산한 값으로 DB 조회
+		        listboard = boardService.getPageList( ph.getStartRow(),ph.getEndRow() );
 		    }
 		    
-		    // 5. 뷰(HTML)에서 사용할 리스트와 페이징 정보를 모델에 담기
+		    // 6. 뷰(HTML)에서 사용할 리스트와 페이징 정보를 모델에 담기
 		    model.addAttribute("list", listboard);
-		    model.addAttribute("ph", ph); // 화면에서 ph.beginPage, ph.endPage 등을 사용합니다.
+		    model.addAttribute("ph", ph); // 화면에서 ph.beginPage, ph.endPage 등을 사용.
 		    
 		    String nextPage = "board/boardList";
 		    return nextPage;

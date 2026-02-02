@@ -5,8 +5,8 @@
 <mapper namespace="com.green.board.mapper.BoardMapper">
 
       <insert id="insertBoard" parameterType="BoardDTO">
-        INSERT INTO board(writer,subject,writerPw,content,id) 
-        VALUES(#{writer},#{subject},#{writerPw},#{content},#{id})
+        INSERT INTO board(writer,subject,writerPw,content,id,image) 
+        VALUES(#{writer},#{subject},#{writerPw},#{content},#{id},#{image})
       </insert>
       
       <select id="getAllBoard" resultType="BoardDTO">
@@ -46,9 +46,19 @@
 		    ORDER BY num DESC
 		</select>
     
+    	<!-- 게시판 페이징 : 전체 게시글 수 -->
     	<select id="getAllcount" resultType="int">
     		SELECT COUNT(*) FROM board
     	</select>
+    	
+    	<!-- 게시판 페이징 : startRow ~ pageSize 목록보기 -->
+    	<select id="getPageList" resultType="BoardDTO">
+		    SELECT *
+		    FROM board
+		    ORDER BY num DESC
+		    LIMIT #{startRow}, #{pageSize}
+		</select>
+    	
     	
     	<select id="getPageBoard" resultType="BoardDTO">
 		    SELECT * FROM board 

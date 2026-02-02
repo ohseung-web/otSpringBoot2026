@@ -15,7 +15,12 @@
 		<div id="section_wrap">
 			<div class="word">게시글 쓰기</div>
 			<div class="content">
-			  <form th:action="@{/board/writePro}" method="POST" name="board_form">
+			
+				<!-- 파일 업로드는 무조건 multipart/form-data -->
+			  <form th:action="@{/board/writePro}" method="POST" 
+			   name="board_form"
+			   enctype="multipart/form-data">
+			   
 			       <table width="600" border="1">
 			          <tr height="40">
 			             <td align="center" width="150">작성자</td>
@@ -33,6 +38,15 @@
 			             <td align="center" width="150">글내용</td>
 			             <td width="450"><textarea rows="10" cols="55" name="content" class="b_contents"></textarea>
 			          </tr>
+			          
+			          <!--  ⭐ 이미지 업로드 추가 -->
+				        <tr height="40">
+				            <td align="center" width="150">이미지</td>
+				            <td width="450">
+				                <input type="file" name="file">
+				            </td>
+				        </tr>
+				        
 			          <tr height="40">
 			             <td align="center" colspan="2">
 			                <input type="submit" value="글쓰기" >&nbsp;&nbsp;
