@@ -48,5 +48,21 @@ public interface BoardMapper {
 	    // 전체 조회가 아닌, 페이징 처리를 위한 조회로 수정합니다.
 	    public List<BoardDTO> getPageBoard(@Param("offset") int offset, @Param("limit") int limit);
 	    
-	   
+	   // 검색 결과 개수 => 페이징에서 사용함
+	    int getSearchCount(@Param("searchType") String searchType,
+	                       @Param("searchKeyword") String searchKeyword);
+
+	    // 검색 + 페이징
+	    List<BoardDTO> getSearchPageList(@Param("searchType") String searchType,
+	                                     @Param("searchKeyword") String searchKeyword,
+	                                     @Param("startRow") int startRow,
+	                                     @Param("pageSize") int pageSize);
+	    
+	    public List<BoardDTO> getMyBoardList(@Param("loginId") String loginId, 
+                @Param("startRow") int startRow, 
+                @Param("pageSize") int pageSize);
+
+	    public int getMyBoardCount(@Param("loginId") String loginId);
 }
+
+

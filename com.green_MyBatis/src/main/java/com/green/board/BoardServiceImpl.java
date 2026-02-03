@@ -100,5 +100,28 @@ public class BoardServiceImpl implements BoardService {
 	    int offset = (page - 1) * pageSize;
 	    return boardMapper.getPageBoard(offset, pageSize);
 	}
+
+	@Override
+	public int getSearchCount(String searchType, String searchKeyword) {
+	    return boardMapper.getSearchCount(searchType, searchKeyword);
+	}
+
+	@Override
+	public List<BoardDTO> getSearchPageList(String searchType,
+	                                        String searchKeyword,
+	                                        int startRow,
+	                                        int pageSize) {
+	    return boardMapper.getSearchPageList(searchType, searchKeyword, startRow, pageSize);
+	}
 	
+	// ServiceImpl 부분만 예시로 작성합니다.
+	@Override
+	public List<BoardDTO> getMyBoardList(String loginId, int startRow, int pageSize) {
+	    return boardMapper.getMyBoardList(loginId, startRow, pageSize);
+	}
+
+	@Override
+	public int getMyBoardCount(String loginId) {
+	    return boardMapper.getMyBoardCount(loginId);
+	}
 }

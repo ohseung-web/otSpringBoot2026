@@ -151,40 +151,89 @@ public class BoardController {
 		
 		// 게시판 페이징 하기 ------------------------------------------------------------------------
 		// 검색을 위한 board/list 커스텀 하기
-		@GetMapping("/board/list")
-		public String boardList(Model model,
-		        @RequestParam(value="searchType", required=false) String searchType,
-		        @RequestParam(value="searchKeyword", required=false) String searchKeyword,
-		         // 1. 페이지 번호 => 1부터 시작으로 초기값 지정하는 파라미터 추가
-		        @RequestParam(value="page", required=false, defaultValue="1") int page, 
-		        //  2. 페이지 사이즈 => 한 화면에 보여지는 게시글의 개수를 5개로 초기화하는 파라미터 추가
-		        @RequestParam(value="pageSize", required=false, defaultValue="5") int pageSize
-				) {
-		    System.out.println("1)BoardController boardList()메소드 호출");
-		    
-		    // 3. 전체 게시글 개수 가져오기
-		    int totalCnt = boardService.getAllcount();
-		    
-		    // 4. PageHandler 생성 (현재 페이지와 전체 게시글 수 전달)
-		    PageHandler ph = new PageHandler(totalCnt, page, pageSize); 
-		 
-		    List<BoardDTO> listboard;  
-		    
-		    if(searchType != null && !searchKeyword.trim().isEmpty() ) {
-		        listboard = boardService.searchBoard(searchType, searchKeyword);
-		    } else {	    	
-		    	// 5 핵심: PageHandler가 계산한 값으로 DB 조회
-		        listboard = boardService.getPageList( ph.getStartRow(),ph.getEndRow() );
-		    }
-		    
-		    // 6. 뷰(HTML)에서 사용할 리스트와 페이징 정보를 모델에 담기
-		    model.addAttribute("list", listboard);
-		    model.addAttribute("ph", ph); // 화면에서 ph.beginPage, ph.endPage 등을 사용.
-		    
-		    String nextPage = "board/boardList";
-		    return nextPage;
-		}
-		
+//		@GetMapping("/board/list")
+//		public String boardList(Model model,
+//		        @RequestParam(value="searchType", required=false) String searchType,
+//		        @RequestParam(value="searchKeyword", required=false) String searchKeyword,
+//		         // 1. 페이지 번호 => 1부터 시작으로 초기값 지정하는 파라미터 추가
+//		        @RequestParam(value="page", required=false, defaultValue="1") int page, 
+//		        //  2. 페이지 사이즈 => 한 화면에 보여지는 게시글의 개수를 5개로 초기화하는 파라미터 추가
+//		        @RequestParam(value="pageSize", required=false, defaultValue="5") int pageSize
+//				) {
+//		    System.out.println("1)BoardController boardList()메소드 호출");
+//		    
+//		    // 3. 전체 게시글 개수 가져오기
+//		    int totalCnt = boardService.getAllcount();
+//		    
+//		    // 4. PageHandler 생성 (현재 페이지와 전체 게시글 수 전달)
+//		    PageHandler ph = new PageHandler(totalCnt, page, pageSize); 
+//		 
+//		    List<BoardDTO> listboard;  
+//		    
+//		    if(searchType != null && !searchKeyword.trim().isEmpty() ) {
+//		        listboard = boardService.searchBoard(searchType, searchKeyword);
+//		    } else {	    	
+//		    	// 5 핵심: PageHandler가 계산한 값으로 DB 조회
+//		        listboard = boardService.getPageList( ph.getStartRow(),ph.getEndRow() );
+//		    }
+//		    
+//		    // 6. 뷰(HTML)에서 사용할 리스트와 페이징 정보를 모델에 담기
+//		    model.addAttribute("list", listboard);
+//		    model.addAttribute("ph", ph); // 화면에서 ph.beginPage, ph.endPage 등을 사용.
+//		    
+//		    String nextPage = "board/boardList";
+//		    return nextPage;
+//		}
+//		
+    
+        // 검색 + 페이징 
+    @GetMapping("/board/list")
+    public String boardList(Model model, HttpSession session,
+            @RequestParam(value="searchType", required=false) String searchType,
+            @RequestParam(value="searchKeyword", required=false) String searchKeyword,
+            @RequestParam(value="page", defaultValue="1") int page,
+            @RequestParam(value="pageSize", defaultValue="5") int pageSize) {
+
+    	// 1. 세션에서 로그인 아이디 가져오기
+        MemberDTO loginedMember = (MemberDTO)session.getAttribute("loginedMember");
+        if (loginedMember == null) {
+            return "redirect:/member/login";
+        }
+        String loginId = loginedMember.getId();
+        
+        boolean isSearch = (searchType != null && searchKeyword != null && !searchKeyword.trim().isEmpty());
+
+        int totalCnt;
+        List<BoardDTO> list;
+
+        if (isSearch) {
+            totalCnt = boardService.getSearchCount(searchType, searchKeyword);
+        } else {
+            totalCnt = boardService.getAllcount();
+        }
+
+        PageHandler ph = new PageHandler(totalCnt, page, pageSize);
+
+        if (isSearch) {
+            list = boardService.getSearchPageList(
+                    searchType,
+                    searchKeyword,
+                    ph.getStartRow(),
+                    ph.getEndRow()
+            );
+        } else {
+            list = boardService.getPageList(ph.getStartRow(), ph.getEndRow());
+        }
+
+        model.addAttribute("list", list);
+        model.addAttribute("ph", ph);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("searchKeyword", searchKeyword);
+
+        return "board/boardList";
+    }
+
+    
 		
 		//-----------------------------------------------------------------------------------------------------
 	
@@ -247,6 +296,31 @@ public class BoardController {
 	        }
 	    }		
 		
-	    
+	    //---------  마이페이지
+	    @GetMapping("/member/mypage")
+	    public String myPostList(Model model, HttpSession session,
+	            @RequestParam(value="page", defaultValue="1") int page) {
+
+	        // 1. 세션에서 로그인한 정보 가져오기
+	        MemberDTO loginedMember = (MemberDTO)session.getAttribute("loginedMember");
+	        if (loginedMember == null) return "redirect:/member/login";
+	        
+	        String loginId = loginedMember.getId();
+	        int pageSize = 5; // 마이페이지는 간단하게 5개씩
+
+	        // 2. 내 글이 총 몇 개인지 조회 (페이징용)
+	        int totalCnt = boardService.getMyBoardCount(loginId);
+	        
+	        // 3. 페이징 계산기 생성
+	        PageHandler ph = new PageHandler(totalCnt, page, pageSize);
+
+	        // 4. [핵심] JOIN을 사용해 내 글 목록만 가져오기
+	        List<BoardDTO> mylist = boardService.getMyBoardList(loginId, ph.getStartRow(), ph.getPageSize());
+
+	        model.addAttribute("list", mylist);
+	        model.addAttribute("ph", ph);
+	        
+	        return "member/mypage"; // 새로 만들 마이페이지 HTML
+	    }
 	    
 }

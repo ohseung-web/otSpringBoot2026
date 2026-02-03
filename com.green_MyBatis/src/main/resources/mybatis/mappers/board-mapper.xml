@@ -65,4 +65,54 @@
 		    ORDER BY num DESC 
 		    LIMIT #{offset}, #{limit}
 		</select>
+		
+		<!-- 검색 결과 개수 -->
+		<select id="getSearchCount" resultType="int">
+		    SELECT COUNT(*) FROM board
+		    <where>
+		        <choose>
+		            <when test="searchType == 'subject'">
+		                subject LIKE CONCAT('%', #{searchKeyword}, '%')
+		            </when>
+		            <otherwise>
+		                content LIKE CONCAT('%', #{searchKeyword}, '%')
+		            </otherwise>
+		        </choose>
+		    </where>
+		</select>
+		
+		<!-- 검색 + 페이징 -->
+		<select id="getSearchPageList" resultType="BoardDTO">
+		    SELECT * FROM board
+		    <where>
+		        <choose>
+		            <when test="searchType == 'subject'">
+		                subject LIKE CONCAT('%', #{searchKeyword}, '%')
+		            </when>
+		            <otherwise>
+		                content LIKE CONCAT('%', #{searchKeyword}, '%')
+		            </otherwise>
+		        </choose>
+		    </where>
+		    ORDER BY num DESC
+		    LIMIT #{startRow}, #{pageSize}
+		</select>
+		
+		<select id="getMyBoardCount" resultType="int">
+		    SELECT COUNT(*) FROM board WHERE id = #{loginId}
+		</select>
+		
+		<select id="getMyBoardList" resultType="BoardDTO">
+		    SELECT 
+		        b.num, 
+		        b.subject, 
+		        b.reg_date, 
+		        b.readcount, 
+		        m.name as writer  FROM board b
+		    INNER JOIN member m ON b.id = m.id
+		    WHERE b.id = #{loginId}
+		    ORDER BY b.num DESC
+		    LIMIT #{startRow}, #{pageSize}
+		</select>
+		
 </mapper>

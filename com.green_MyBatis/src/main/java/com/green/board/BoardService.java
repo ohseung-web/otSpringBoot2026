@@ -38,4 +38,17 @@ public interface BoardService {
 	public List<BoardDTO> getPageList2(int page, int pageSize);
 	
 	public List<BoardDTO> getPageList(int startRow, int pageSize);
+	
+	// 검색조건에 만족하는 전체 개수
+	public int getSearchCount(String searchType, String searchKeyword);
+
+	// 검색한 후의 페이징
+	public List<BoardDTO> getSearchPageList(String searchType,
+	                                 String searchKeyword,
+	                                 int startRow,
+                                 int pageSize);
+	
+	public List<BoardDTO> getMyBoardList(String loginId, int startRow, int pageSize);
+	
+	public int getMyBoardCount(String loginId);
 }
