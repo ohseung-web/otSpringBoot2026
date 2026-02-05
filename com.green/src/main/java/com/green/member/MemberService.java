@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.green.member.mapper.MemberMapper;
+
 // controller -> service : DAO 메소드 찾아있어 
 // DAO야 메소드 있어 -> DB에서 찾아옴
 // DB -> id, pw값들고  -> DAO로 보냄 -> service의 메소드로 보냄
 // -> controller에게 id, pw 찾아서 보냄
+
 @Service
 public class MemberService {
 
@@ -24,7 +27,7 @@ public class MemberService {
 	//MemberDAO도 DI를 정의한다.
 	@Autowired
 	MemberDAO memberdao;
-
+	
 	//암호화 하는 PasswordEncoder도 의존성 객체로 주입한다.
 	@Autowired
 	PasswordEncoder passwordencoder;
@@ -33,7 +36,6 @@ public class MemberService {
 	public List<MemberDTO> allListMember(){
 		return memberdao.allSelectMember();
 	}
-	
 	
 	//회원가입이 제대로 되었는지, 혹은 회원가입이 실패했는지 예외처리
 	public int signupConfirm(MemberDTO mdto) {
