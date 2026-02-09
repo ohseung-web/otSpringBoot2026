@@ -37,6 +37,10 @@ content varchar(1000),
 id varchar(20)
 );
 
+ALTER TABLE board ADD image VARCHAR(255);
+
+
+
 INSERT INTO board (writer, subject, writerPw, reg_date, readcount, content, id) VALUES
 ('kim',   '스프링 공부중입니다', '1234', NOW(), 3, '스프링부트 너무 재밌어요', 'kim1111'),
 ('오티',  '겨울이야',           '1234', NOW(), 5, '날씨가 너무 춥네요', 'kjb1030'),

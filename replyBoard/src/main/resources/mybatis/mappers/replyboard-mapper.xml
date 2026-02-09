@@ -9,10 +9,10 @@
 		re_level=1; 
 	 -->
 	<insert id="insertReplyBoard" parameterType="rDTO">
-		INSERT INTO replyBoard(writer,email,subject,password,ref,re_step,re_level,content)
+		INSERT INTO replyBoard(writer,email,subject,password,ref,re_step,re_level,content,upload1,upload2)
 		VALUES(#{writer},#{email},#{subject},#{password},
 		<!-- 별칭 'r'를 주어 별도 쿼리로 인식시킴 -->
-		(SELECT IFNULL(MAX(r.ref) + 1, 1) FROM replyBoard r),1,1,#{content})
+		(SELECT IFNULL(MAX(r.ref) + 1, 1) FROM replyBoard r),1,1,#{content},#{upload1},#{upload2})
 	</insert>
 	
 	<!-- public List<ReplyBoardDTO> getAllReplyBoard(); -->

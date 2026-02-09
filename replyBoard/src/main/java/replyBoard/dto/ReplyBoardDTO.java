@@ -14,8 +14,22 @@ public class ReplyBoardDTO {
 	  private int re_level; // 댓글 들여쓰기 단계 (원글/댓글 구분)
 	  private int readcount; //조회수
 	  private String content;// 글 내용
+	  private String upload1;// 이미지1
+	  private String upload2;// 이미지1
 	  
 	
+	  public String getUpload1() {
+		return upload1;
+	}
+	  public void setUpload1(String upload1) {
+		  this.upload1 = upload1;
+	  }
+	  public String getUpload2() {
+		  return upload2;
+	  }
+	  public void setUpload2(String upload2) {
+		  this.upload2 = upload2;
+	  }
 	  public int getNum() {
 		  return num;
 	  }

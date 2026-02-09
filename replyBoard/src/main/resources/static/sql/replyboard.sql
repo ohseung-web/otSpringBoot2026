@@ -9,7 +9,9 @@ ref int,
 re_step int,
 re_level int,
 readcount int default 0,
-content varchar(1000)
+content varchar(1000),
+upload1 varchar(50),
+upload2 varchar(50)
 );
 
 INSERT INTO replyBoard
