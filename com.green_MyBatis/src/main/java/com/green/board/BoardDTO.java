@@ -1,5 +1,6 @@
 package com.green.board;
 
+
 public class BoardDTO {
   private int num; //글번호
   private String writer; // 글쓴이
@@ -11,18 +12,6 @@ public class BoardDTO {
   private String id;//회원 아이디
   private String image; //업로드 이미지
   
-  public String getImage() {
-	return image;
-}
-  public void setImage(String image) {
-	this.image = image;
-  }
-  public String getId() {
-	return id;
-}
-  public void setId(String id) {
-	this.id = id;
-  }
   public int getNum() {
 	return num;
   }
@@ -65,9 +54,18 @@ public class BoardDTO {
   public void setContent(String content) {
 	this.content = content;
   }
-  
-  
-  
+  public String getId() {
+	return id;
+  }
+  public void setId(String id) {
+	this.id = id;
+  }
+  public String getImage() {
+	return image;
+  }
+  public void setImage(String image) {
+	this.image = image;
+  }
   
   
   
