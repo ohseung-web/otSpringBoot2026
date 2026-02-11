@@ -11,6 +11,8 @@ import Login from './pages/Login';
 import SignupResult from './pages/SignupResult';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthProvider from './contexts/AuthContext';
+import MyInfo from './pages/MyInfo';
+import Modify from './pages/Modify';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
               <Route path="/member/signup" element={<Signup />} />
               <Route path="/member/login" element={<Login />} />
               <Route path="/member/signup_result" element={<SignupResult />} />
+              <Route path="member/myinfo" element={<MyInfo />} />
+              <Route path="member/modify" element={<Modify />} />
             </Routes>
           </main>
 

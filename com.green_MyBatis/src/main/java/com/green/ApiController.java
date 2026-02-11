@@ -3,12 +3,13 @@ package com.green;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.green.carproduct.CarProductDTO;
 import com.green.carproduct.CarProductService;
@@ -58,28 +59,87 @@ public class ApiController {
         // Service에서 이미 암호화 및 중복 체크를 다 처리합니다.
         return memberService.signupConfirm(mdto);
     }
-
-    // 로그인 API (POST 방식)
-    @PostMapping("/member/login")
-    public MemberDTO login(@RequestBody MemberDTO mdto) {
-        System.out.println("로그인 요청: " + mdto.getId());
-        // 성공 시 회원정보 객체 반환, 실패 시 null 반환
-        return memberService.loginConfirm(mdto);
-    }
     
-    // 로그아웃 API 수정 버전
+ // -------------------------------
+    // 로그인 (세션 저장 추가)
+    // -------------------------------
+    @PostMapping("/member/login")
+    public MemberDTO login(@RequestBody MemberDTO mdto, HttpSession session) {
+
+        MemberDTO loginUser = memberService.loginConfirm(mdto);
+
+        if (loginUser != null) {
+            // 🔥 세션에 로그인 사용자 저장
+            session.setAttribute("loginUser", loginUser.getId());
+        }
+
+        return loginUser;  // React로 JSON 반환
+    }
+
+    // -------------------------------
+    // 로그아웃
+    // -------------------------------
     @GetMapping("/member/logout")
     public int logout(HttpSession session) {
-        System.out.println("ApiController: 로그아웃 요청됨");
-        
-        // 1. 서버 세션 무효화
-        // (사실 리액트 방식에서는 sessionStorage를 쓰기 때문에 서버 세션이 비어있을 확률이 높지만, 
-        // 혹시 모를 보안을 위해 남겨두는 것은 괜찮습니다.)
-        session.invalidate(); 
-        
-        // 2. 성공했다는 신호(1)만 리턴합니다.
-        // 이동(Redirect)은 서버가 아니라 리액트가 결정합니다.
-        return 1; 
+
+        session.invalidate();  // 세션 삭제
+
+        return 1;  // 성공 신호
+    }
+
+    // -------------------------------
+    // 🔥 내정보 조회 (세션 기준)
+    // -------------------------------
+    @GetMapping("/member/myinfo")
+    public MemberDTO myInfo(HttpSession session) {
+
+        // 세션에서 로그인한 사용자 꺼냄
+        String loginId = (String) session.getAttribute("loginUser");
+
+        if (loginId == null) {
+            // 로그인 안 되어 있으면 null 반환
+            return null;
+        }
+
+        // 로그인 되어 있으면 DB 조회
+        return memberService.oneSelect(loginId);
     }
     
+	 // -------------------------------
+	 // 🔥 회원 삭제
+	 // -------------------------------
+	 @DeleteMapping("/member/delete")
+	 public int delete(HttpSession session) {
+	
+	     String loginId = (String) session.getAttribute("loginUser");
+	
+	     if (loginId == null) {
+	         return 0; // 로그인 안됨
+	     }
+	
+	     boolean result = memberService.oneDelete(loginId);
+	
+	     if (result) {
+	         session.invalidate();  // 삭제되면 세션도 종료
+	         return 1;
+	     } else {
+	         return 0;
+	     }
+	 }
+    
+    // 수정 부분
+	 @PutMapping("/member/modify")
+	 public boolean modify(@RequestBody MemberDTO dto, HttpSession session) {
+
+	     String loginId = (String) session.getAttribute("loginUser");
+
+	     if (loginId == null) {
+	         return false; // 로그인 안된 경우
+	     }
+
+	     dto.setId(loginId);
+
+	     return memberService.modifyMember(dto);
+	 }
+
 }

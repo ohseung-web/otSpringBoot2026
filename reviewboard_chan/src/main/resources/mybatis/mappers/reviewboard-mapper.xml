@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 매개변수 자리는 파라미터로 받고  데이터타입을 result로 받는다. DTO라면 경로로 삽입. -->
+<mapper namespace="reviewboard.mapper.ReviewBoardMapper">
+
+	<!-- 리뷰 추가 -->
+	<insert id="addReview" parameterType="ReviewDTO">
+		INSERT INTO review(title,content,writer,star) VALUES(#{title},#{content},#{writer},#{star})
+	</insert>
+	
+	<!-- 리뷰 전체 출력 -->
+	<select id="allReview" resultType="ReviewDTO">
+		SELECT * FROM review ORDER BY num DESC
+	</select>
+	
+	<!-- 리뷰 수정 -->
+	<update id="updateReview" parameterType="ReviewDTO">
+		UPDATE review SET title=#{title}, content=#{content}, star=#{star} WHERE num=#{num}
+	</update>
+	
+	<!-- 리뷰 삭제 -->
+	<delete id="deleteReview" parameterType="int">
+		DELETE FROM review WHERE num=#{num}
+	</delete>
+	
+	<!-- 조회수 증가 -->
+	<update id="readCount" parameterType="int">
+		UPDATE review SET readcount = readcount + 1 WHERE num=#{num}
+	</update>
+	
+	<!-- 하나 리뷰 -->
+	<select id="oneReview" parameterType="int" resultType="ReviewDTO">
+		SELECT * FROM review WHERE num = #{num}
+	</select>
+	
+	<!-- 전체리뷰개수 -->
+	<select id ="allReviewCount" resultType="int">
+		SELECT COUNT(*) FROM review
+	</select>
+	
+	<select id="getPageList" resultType="ReviewDTO">
+    	SELECT * FROM review ORDER BY num DESC LIMIT #{startRow}, #{pageSize}
+	</select>
+	
+	<!-- 평균별점 이거 찾아봤스비낟 -->
+	<select id="avgStar" resultType="double">
+    	SELECT IFNULL(AVG(star), 0) FROM review
+	</select>
+	
+</mapper>

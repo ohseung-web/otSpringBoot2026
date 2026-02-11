@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+<body>
+	<h3>리뷰 작성</h3>
+	<form th:action="@{/writePro}" method="POST">
+		<div class="review-form">
+	        <input type="text" name="title" placeholder="제목">
+	        <input type="text" name="writer" placeholder="작성자">
+	        <select name="star">
+	            <option value="5">5점</option>
+	            <option value="4">4점</option>
+	            <option value="3">3점</option>
+	            <option value="2">2점</option>
+	            <option value="1">1점</option>
+	        </select>
+	        <input type="text" name="content" placeholder="후기 작성">
+	    </div>
+	    <button type="submit" class="gotowrite">리뷰 등록</button>
+	</form>
+
+</body>
+</html>

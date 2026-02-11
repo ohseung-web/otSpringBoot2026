@@ -1,46 +1,33 @@
-import { useLocation, Link } from 'react-router-dom';
-import './Member.css';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
-export default function SignupResult() {
-  const location = useLocation();
-  // Signup.jsx에서 navigate 시 전달한 state 값을 받습니다.
-  const result = location.state?.result;
+function SignupResult() {
+  // 1️⃣ 현재 URL에 붙어있는 ?result=값 을 읽기 위해 사용하는 리액트 훅
+  // 예: /member/signup_result?result=success
+  // 위 주소에서 result=success 부분을 꺼내기 위한 도구
+  const [searchParams] = useSearchParams();
+
+  // 2️⃣ 페이지를 다른 주소로 이동시키기 위한 도구
+  // 예: 버튼 클릭 시 로그인 페이지로 이동할 때 사용
+  // navigate("/member/login") 이런 식으로 사용
+  const navigate = useNavigate();
+
+  // 3️⃣ URL에 붙어있는 result 값을 꺼내는 코드
+  // 예: /member/signup_result?result=success
+  // → "success" 라는 문자열을 꺼내서 result 변수에 저장
+  const result = searchParams.get('result');
 
   return (
-    <section>
-      <div id="section_wrap">
-        <div className="word">회원 가입 결과</div>
-        <div
-          className="content"
-          style={{ textAlign: 'center', padding: '50px 0' }}
-        >
-          {result > 0 ? (
-            <div>
-              <h2 style={{ color: '#2ecc71' }}>축하합니다! 회원가입 성공</h2>
-              <p style={{ marginTop: '20px' }}>
-                이제 로그인 후 서비스를 이용하실 수 있습니다.
-              </p>
-              <div className="btn_group" style={{ marginTop: '30px' }}>
-                <Link to="/member/login">
-                  <button>로그인하러 가기</button>
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div>
-              <h2 style={{ color: '#e74c3c' }}>회원가입 실패</h2>
-              <p style={{ marginTop: '20px' }}>
-                알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.
-              </p>
-              <div className="btn_group" style={{ marginTop: '30px' }}>
-                <Link to="/member/signup">
-                  <button>다시 가입하기</button>
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
+    <div>
+      {result === 'success' && <h2>회원가입 성공 🎉</h2>}
+      {result === 'duplicate' && <h2>이미 존재하는 아이디입니다</h2>}
+      {result === 'fail' && <h2>회원가입 실패</h2>}
+      {result === 'error' && <h2>서버 오류 발생</h2>}
+
+      <button onClick={() => navigate('/member/login')}>
+        로그인 페이지로 이동
+      </button>
+    </div>
   );
 }
+
+export default SignupResult;

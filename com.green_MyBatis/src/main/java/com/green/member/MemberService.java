@@ -94,7 +94,7 @@ public class MemberService {
 		String dbPass = memberMapper.getPass(mdto.getId());
 		
 		//2. if 비교
-		if(dbPass.equals(mdto.getPw()) && dbPass != null) {
+		if( dbPass != null && dbPass.equals(mdto.getPw())) {
 			// 내가 입력한 DB의 패스워드가 존재할 때
 			return memberMapper.updateMember(mdto) == 1;
 		}else {

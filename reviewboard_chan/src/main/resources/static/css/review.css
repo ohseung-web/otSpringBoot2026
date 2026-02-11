@@ -1,0 +1,187 @@
+@charset "UTF-8";
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    background-color: #f5f6f7;
+    padding: 40px;
+    color: #333;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+.review-wrap,
+#section_wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.word {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+.stars {
+    text-align: center;
+    font-size: 20px;
+    color: #ffb400;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #f1f3f5;
+    font-weight: 600;
+}
+.review-table tbody tr:hover {
+    background-color: #fafafa;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 90%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+textarea {
+    resize: none;
+    height: 120;
+    }
+/* ===== 페이징 ===== */
+.paging {
+    margin-top: 30px;
+    text-align: center;
+}
+.paging a {
+    display: inline-block;
+    min-width: 36px;
+    padding: 8px 12px;
+    margin: 0 3px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+.paging a:hover {
+    background-color: #f1f3f5;
+}
+.paging a.active {
+    background-color: #ffb400;
+    border-color: #ffb400;
+    color: #fff;
+    font-weight: 600;
+    cursor: default;
+}
+.paging a:first-child,
+.paging a:last-child {
+    font-weight: 600;
+}
+.gotowrite {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 24px;
+    background-color: #ffb400;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+/* 호버 효과 */
+.gotowrite:hover {
+    background-color: #e6a200;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* 가운데 정렬 */
+.review-wrap {
+    text-align: center;
+}
+/* ===== 상세페이지 버튼 영역 ===== */
+.content td[colspan="4"] {
+    padding: 20px 0;
+}
+
+/* 공통 버튼 스타일 */
+.content input[type="button"],
+.content input[type="submit"] {
+    padding: 10px 18px;
+    margin: 0 6px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 수정 버튼 */
+.content input[value="수정하기"] {
+    background-color: #4dabf7;
+    color: #fff;
+}
+.content input[value="수정하기"]:hover {
+    background-color: #339af0;
+}
+
+/* 삭제 버튼 */
+.content input[value="삭제하기"] {
+    background-color: #ff6b6b;
+    color: #fff;
+}
+.content input[value="삭제하기"]:hover {
+    background-color: #fa5252;
+}
+
+/* 돌아가기 버튼 */
+.content input[value="돌아가기"] {
+    background-color: #adb5bd;
+    color: #fff;
+}
+.content input[value="돌아가기"]:hover {
+    background-color: #868e96;
+}
+
+/* 삭제 form을 inline으로 */
+.content form {
+    display: inline-block;
+    margin: 0;
+}

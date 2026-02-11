@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+<body>
+	<div class="review-wrap">
+	    <h2>레스토랑 리뷰</h2>
+	    <h3>전체 리뷰 수 :<span th:text="${totalCnt}"></span>개</h3>
+	    <h3>평균 별점 : <span th:text="${#numbers.formatDecimal(avgStar,1,1)}"></span> 점</h3> 
+	    <div class="stars">
+		    <span th:each="i : ${#numbers.sequence(1,5)}"
+		          th:text="${i <= avgStar ? '⭐' : ''}">
+		    </span>
+		</div>
+		<!-- 별점출력 html은 검색했습니다 죄송합니다 -->
+	    <table class="review-table">
+	        <thead>
+	            <tr>
+	                <th>번호</th>
+	                <th>제목</th>
+	                <th>작성자</th>
+	                <th>별점</th>
+	                <th>작성일</th>
+	                <th>조회수</th>
+	            </tr>
+	            <tr th:each="li, stat:${list}">
+			     		<td th:text="${ph.totalCnt-((ph.pageNum-1)*ph.pageSize) - stat.index}"></td>
+			     		<td><a th:href="@{/detail(num=${li.num})}"th:text="${li.title}"></a></td>
+			     		<td th:text="${li.writer}"></td>
+			     		<td th:text="${li.star}+점"></td>
+			     		<td th:text="${li.regDate}"></td>
+			     		<td th:text="${li.readcount}"></td>
+			     	</tr>
+	        </thead>
+	    </table>
+	    <a class="gotowrite" th:href="@{/write}">리뷰 작성하기</a>
+	</div>
+	<div class="paging">
+   		<a th:if="${ph.prev}"th:href="@{/(page=${ph.startPage-1}, pageSize=${ph.pageSize})}">◀</a>
+   		<span th:each="i : ${#numbers.sequence(ph.startPage, ph.endPage)}">
+   			<a th:href="@{/(page=${i}, pageSize=${ph.pageSize})}"
+    						th:text="${i}"
+    						th:classappend="${i == ph.pageNum} ? 'active' : ''">
+ 					</a>
+		</span>
+   		<a th:if="${ph.next}" th:href="@{/(page=${ph.endPage+1})}">▶</a>
+	</div>
+</body>
+</html>

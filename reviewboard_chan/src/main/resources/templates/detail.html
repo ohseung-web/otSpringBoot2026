@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+<body>
+	<div id="section_wrap">
+		<div class="word">게시글상세정보</div>
+		<div class="content">
+		   <table width="600" border="1">
+		     <tbody>
+		     	<tr height="40">
+		     	    <td width="150" align="center">글번호</td>
+		     		<td width="450" align="center" th:text="${onereview.num}"></td>
+		     	    <td width="150" align="center">조회수</td>
+		     		<td width="450" align="center" th:text="${onereview.readcount}"></td>
+		     	</tr>
+		     	<tr height="40">
+		     	    <td width="150" align="center">작성자</td>
+		     		<td width="450" align="center" th:text="${onereview.writer}"></td>
+		     	    <td width="150" align="center">작성일</td>
+		     		<td width="450" align="center" th:text="${onereview.regDate}"></td>
+		     	</tr>
+		     	<tr height="40">
+		     	    <td width="150" align="center">제목</td>
+		     		<td align="center" colspan="3" th:text="${onereview.title}"></td>
+		     	</tr>
+		     	<tr height="40">
+		     	    <td width="150" align="center">별점</td>
+		     		<td align="center" colspan="3" th:text="${onereview.star}"></td>
+		     	</tr>
+		     	<tr height="40">
+		     	    <td width="150" align="center">내용</td>
+		     		<td align="center" colspan="3" th:text="${onereview.content}"></td>
+		     	</tr>
+		     	<tr height="40">
+		     		<td align="center" colspan="4">
+		     			<input type="button" th:onclick="|location.href='@{/update(num=${onereview.num})}'|" value="수정하기"/>
+		     			<!-- 삭제할 게시글의 번호, 비밀번호를 알아야 삭제가능 -->
+		     			<!-- input태그의 type이 hidden이면 숨겨진 상태로 value값을 넘길 수 있다. -->
+		     			<form th:action="@{/deletePro}" method="GET">
+		     				<input type="hidden" name="num" th:value="${onereview.num}"/>
+		     				<input type="submit" onclick="return confirm('정말로 삭제하시겠습니까?');" value="삭제하기"/>
+		     			</form>
+		     			<input type="button" th:onclick="|location.href='@{/}'|" value="돌아가기"/>
+		     		</td>
+		     	</tr>
+		     </tbody>  	
+		   </table>  
+		</div>
+	</div>
+	
+</body>
+</html>

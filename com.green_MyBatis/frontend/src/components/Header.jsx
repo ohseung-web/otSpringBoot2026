@@ -42,7 +42,7 @@ export default function Header() {
                 [회원목록]
               </Link>
             )}
-            <Link to={`/member/memberInfo?id=${user.id}`}>내정보</Link>
+            <Link to={`/member/myinfo?id=${user.id}`}>내정보</Link>
           </>
         )}
         <Link to="/board/list">게시판</Link>
