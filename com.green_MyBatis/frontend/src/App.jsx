@@ -13,6 +13,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthProvider from './contexts/AuthContext';
 import MyInfo from './pages/MyInfo';
 import Modify from './pages/Modify';
+import Product from './pages/Product';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route path="/member/signup_result" element={<SignupResult />} />
               <Route path="member/myinfo" element={<MyInfo />} />
               <Route path="member/modify" element={<Modify />} />
+              <Route path="/cars/insert" element={<Product />} />
             </Routes>
           </main>
 

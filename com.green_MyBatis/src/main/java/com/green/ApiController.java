@@ -1,5 +1,6 @@
 package com.green;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.green.carproduct.CarProductDTO;
 import com.green.carproduct.CarProductService;
@@ -140,6 +143,51 @@ public class ApiController {
 	     dto.setId(loginId);
 
 	     return memberService.modifyMember(dto);
+	 }
+	 
+	 // --------------  자동차 등록
+	 @PostMapping("/cars/insert")
+	 public int insertCarProduct(
+	         @RequestParam("carName") String carName,
+	         @RequestParam("price") int price,
+	         @RequestParam("company") String company,
+	         @RequestParam("info") String info,
+	         @RequestParam("img") MultipartFile file
+	 ) throws Exception {
+
+	     System.out.println("자동차 등록 요청");
+
+	     // 1️⃣ 저장 경로
+	     String savePath = "D:/Spring_Boot/pjt/com.green_MyBatis/frontend/public/img/car/";
+
+	     File dir = new File(savePath);
+	     if (!dir.exists()) {
+	         dir.mkdirs();
+	     }
+
+	     String fileName = "";
+
+	     if (!file.isEmpty()) {
+
+	         String originalName = file.getOriginalFilename();
+	         fileName = originalName;
+
+	         File saveFile = new File(savePath + fileName);
+	         file.transferTo(saveFile);
+	     }
+
+	     // 2️⃣ DTO 생성
+	     CarProductDTO dto = new CarProductDTO();
+	     dto.setCarName(carName);
+	     dto.setPrice(price);
+	     dto.setCompany(company);
+	     dto.setInfo(info);
+	     dto.setImg(fileName);
+
+	     // 3️⃣ DB 저장
+	     carProductService.insertCarProduct(dto);
+
+	     return 1;
 	 }
 
 }

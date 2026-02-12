@@ -35,12 +35,15 @@ export default function Header() {
             </Link>
 
             {user.id === 'admin1234' && (
-              <Link
-                to="/member/list"
-                style={{ color: 'blue', fontWeight: 'bold' }}
-              >
-                [회원목록]
-              </Link>
+              <>
+                <Link
+                  to="/member/list"
+                  style={{ color: 'blue', fontWeight: 'bold' }}
+                >
+                  [회원목록]
+                </Link>
+                <Link to="/cars/insert">[상품등록]</Link>
+              </>
             )}
             <Link to={`/member/myinfo?id=${user.id}`}>내정보</Link>
           </>
