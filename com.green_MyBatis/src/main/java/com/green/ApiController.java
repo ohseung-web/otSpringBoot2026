@@ -2,10 +2,12 @@ package com.green;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -145,49 +147,105 @@ public class ApiController {
 	     return memberService.modifyMember(dto);
 	 }
 	 
-	 // --------------  자동차 등록
+	 // --------------  자동차 등록 -- 학생들이 이해하기 쉬운 방식
+//	 @PostMapping("/cars/insert")
+//	 public int insertCarProduct(
+//	         @RequestParam("carName") String carName,
+//	         @RequestParam("price") int price,
+//	         @RequestParam("company") String company,
+//	         @RequestParam("info") String info,
+//	         @RequestParam("img") MultipartFile file
+//	 ) throws Exception {
+//
+//	     System.out.println("자동차 등록 요청");
+//
+//	     // 1️ 저장 경로
+//	     String savePath = "D:/Spring_Boot/pjt/com.green_MyBatis/frontend/public/img/car/";
+//
+//	     File dir = new File(savePath);
+//	     if (!dir.exists()) {
+//	         dir.mkdirs();
+//	     }
+//
+//	     String fileName = "";
+//
+//	     if (!file.isEmpty()) {
+//	    	// 사용자가 올린 원래 파일명 (예: "my_car.jpg")을 가져온다.
+//	         String originalName = file.getOriginalFilename();
+//	         
+//	      // [중복 방지] 파일명이 겹치지 않게 UUID를 생성한다.
+//	      // import java.util.UUID;    
+//		  // substring(0, 4)를 사용해 36자리 중 앞 4자리만 가져와서 파일명을 짧게 만든다. (예: "a1b2_my_car.jpg")
+//		  fileName = UUID.randomUUID().toString().substring(0, 4) + "_" + originalName;
+//	         
+//	         File saveFile = new File(savePath + fileName);
+//	         file.transferTo(saveFile);
+//	     }
+//
+//	     // 2️⃣ DTO 생성
+//	     CarProductDTO dto = new CarProductDTO();
+//	     dto.setCarName(carName);
+//	     dto.setPrice(price);
+//	     dto.setCompany(company);
+//	     dto.setInfo(info);
+//	     dto.setImg(fileName);
+//
+//	     // 3️⃣ DB 저장
+//	     carProductService.insertCarProduct(dto);
+//
+//	     return 1;
+//	 }
+	 
+	 
+	 // DTO로 한 번에 받기 + MultipartFile만 따로 받기
+     // SpringBoot에서는 객체 바인딩을 사용하면 자동으로 매핑해준다.
+	 // Spring 객체 바인딩이란?
+     //  => 요청 파라미터 이름과 DTO 필드명이 같으면
+     //     Spring이 자동으로 setter를 호출해준다	
+	 // @ModelAttribute는 스프링 프레임워크에서 클라이언트가 보낸 데이터를 
+	 //   자바 객체(DTO)로 자동으로 바인딩해주는 어노테이션이다.
 	 @PostMapping("/cars/insert")
 	 public int insertCarProduct(
-	         @RequestParam("carName") String carName,
-	         @RequestParam("price") int price,
-	         @RequestParam("company") String company,
-	         @RequestParam("info") String info,
-	         @RequestParam("img") MultipartFile file
-	 ) throws Exception {
-
-	     System.out.println("자동차 등록 요청");
-
-	     // 1️⃣ 저장 경로
-	     String savePath = "D:/Spring_Boot/pjt/com.green_MyBatis/frontend/public/img/car/";
-
-	     File dir = new File(savePath);
-	     if (!dir.exists()) {
-	         dir.mkdirs();
-	     }
-
-	     String fileName = "";
-
-	     if (!file.isEmpty()) {
-
-	         String originalName = file.getOriginalFilename();
-	         fileName = originalName;
-
-	         File saveFile = new File(savePath + fileName);
-	         file.transferTo(saveFile);
-	     }
-
-	     // 2️⃣ DTO 생성
-	     CarProductDTO dto = new CarProductDTO();
-	     dto.setCarName(carName);
-	     dto.setPrice(price);
-	     dto.setCompany(company);
-	     dto.setInfo(info);
-	     dto.setImg(fileName);
-
-	     // 3️⃣ DB 저장
-	     carProductService.insertCarProduct(dto);
-
-	     return 1;
+			 @ModelAttribute CarProductDTO cdto,
+			 @RequestParam("uploadFile") MultipartFile file
+			 ) throws Exception {
+		 
+		 System.out.println("자동차 등록 요청");
+		 
+		 // 1️ 저장 경로
+		 String savePath = "D:/Spring_Boot/pjt/com.green_MyBatis/frontend/public/img/car/";
+		 
+		 // import java.io.File
+		 File dir = new File(savePath);
+		 if (!dir.exists()) {
+			 dir.mkdirs();
+		 }
+		 
+		 String fileName = "";
+		 
+		 if (!file.isEmpty()) {
+			 // 사용자가 올린 원래 파일명 (예: "my_car.jpg")을 가져온다.
+			 String originalName = file.getOriginalFilename();
+			 
+			 // [중복 방지] 파일명이 겹치지 않게 UUID를 생성한다.
+			 // import java.util.UUID;    
+			 // substring(0, 4)를 사용해 36자리 중 앞 4자리만 가져와서 
+			 // 파일명을 짧게 만든다. (예: "a1b2_my_car.jpg")
+			 fileName = UUID.randomUUID().toString().substring(0, 4) + "_" + originalName;
+			 
+			 File saveFile = new File(savePath + fileName);
+			 file.transferTo(saveFile);
+		 }
+		 
+		 // DTO에 파일명만 세팅한다.
+		 cdto.setImg(fileName);
+		 
+		 // 3️ DB 저장
+		 carProductService.insertCarProduct(cdto);
+		 
+		 return 1;
 	 }
+	 
+	 
 
 }

@@ -9,6 +9,7 @@ public class CarProductDTO {
 	private String img; //자동차 이미지
 	private String info; // 자동차 설명
 	
+	public CarProductDTO() {};
 	
 	public int getNo() {
 		return no;

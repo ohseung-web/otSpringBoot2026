@@ -186,7 +186,7 @@ public class BoardController {
 //		}
 //		
     
-        // 검색 + 페이징 
+    // 검색 + 페이징 
     @GetMapping("/board/list")
     public String boardList(Model model, HttpSession session,
             @RequestParam(value="searchType", required=false) String searchType,
@@ -234,6 +234,58 @@ public class BoardController {
     }
 
     
+    // 기존 게시글 을 React vite로 보내는 방법
+//    @GetMapping("/api/board/list")
+//    public Map<String, Object> boardList(
+//            HttpSession session,
+//            @RequestParam(value="searchType", required=false) String searchType,
+//            @RequestParam(value="searchKeyword", required=false) String searchKeyword,
+//            @RequestParam(value="page", defaultValue="1") int page,
+//            @RequestParam(value="pageSize", defaultValue="5") int pageSize) {
+//
+//        Map<String, Object> result = new HashMap<>();
+//
+//        // 1. 로그인 체크
+//        MemberDTO loginedMember = (MemberDTO)session.getAttribute("loginedMember");
+//
+//        if (loginedMember == null) {
+//            result.put("error", "NOT_LOGIN");
+//            return result;
+//        }
+//
+//        boolean isSearch = (searchType != null && searchKeyword != null && !searchKeyword.trim().isEmpty());
+//
+//        int totalCnt;
+//        List<BoardDTO> list;
+//
+//        if (isSearch) {
+//            totalCnt = boardService.getSearchCount(searchType, searchKeyword);
+//        } else {
+//            totalCnt = boardService.getAllcount();
+//        }
+//
+//        PageHandler ph = new PageHandler(totalCnt, page, pageSize);
+//
+//        if (isSearch) {
+//            list = boardService.getSearchPageList(
+//                    searchType,
+//                    searchKeyword,
+//                    ph.getStartRow(),
+//                    ph.getEndRow()
+//            );
+//        } else {
+//            list = boardService.getPageList(ph.getStartRow(), ph.getEndRow());
+//        }
+//
+//        // 🔥 JSON으로 묶어서 전달
+//        result.put("list", list);
+//        result.put("pageInfo", ph);
+//        result.put("searchType", searchType);
+//        result.put("searchKeyword", searchKeyword);
+//
+//        return result;
+//    }
+
 		
 		//-----------------------------------------------------------------------------------------------------
 	
